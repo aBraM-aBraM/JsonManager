@@ -9,9 +9,13 @@ The configuration is quite simple just an array of strings for each attribute yo
 item of the database to have.
 
 The default configuration is ["name,"type"] meaning the json is built as followed
+
 `{`
+
 `"0":{"name":"my_name","type":"my_type"},`
+
 `"1":{"name":"other_name","type":"other_type"}`
+
 `}`
 
 
