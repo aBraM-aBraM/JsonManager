@@ -8,7 +8,7 @@ In this file you can configure what kind of format your jsons will be built in
 The configuration is quite simple just an array of strings for each attribute you want each
 item of the database to have.
 
-The default configuration is ["name,"type"] meaning the json is built as followed
+The default configuration is `["name,"type"]` meaning the json is built as followed
 
 `{`
 
