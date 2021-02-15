@@ -33,5 +33,3 @@ Useful Keys!
 >hopefully you find it helpful, Eyal
 
 if someone wants to fork a remove interface / option that'd be cool
-also instead of checking if key.available in every interface loop it could just
-be swithced with Console.ReadKey() for a smoother experience and to avoid unnecessary bullshit
