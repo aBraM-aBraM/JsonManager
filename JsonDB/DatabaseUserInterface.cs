@@ -18,26 +18,23 @@ namespace JsonDB
         public void UI()
         {
             db = new Database();
+            Console.CursorVisible = false;
             PrintMenu();
             while (true)
-            {
-                if (Console.KeyAvailable)
+            {    
+                ConsoleKey key = Console.ReadKey().Key;
+                // Change choice position
+                if (key == ConsoleKey.DownArrow || key == ConsoleKey.UpArrow)
                 {
-                    ConsoleKey key = Console.ReadKey().Key;
-                    // Change choice position
-                    if (key == ConsoleKey.DownArrow || key == ConsoleKey.UpArrow)
-                    {
-                        choiceIndex = 1 - choiceIndex;
-                        PrintMenu();
-                    }
-                    // Choose item's menu or create new item
-                    if (key == ConsoleKey.Enter)
-                    {
-                        if (choiceIndex == 1) Create_New_Item();
-                        else ItemsMenu();
-                        PrintMenu();
-                    }
-                  
+                    choiceIndex = 1 - choiceIndex;
+                    PrintMenu();
+                }
+                // Choose item's menu or create new item
+                if (key == ConsoleKey.Enter)
+                {
+                    if (choiceIndex == 1) Create_New_Item();
+                    else ItemsMenu();
+                    PrintMenu();
                 }
             }
         }
@@ -53,47 +50,46 @@ namespace JsonDB
             currentKey = PrintModMenu(itemData);
             while (true)
             {
-                if (Console.KeyAvailable)
+
+                ConsoleKey key = Console.ReadKey().Key;
+                if (key == ConsoleKey.RightArrow)
                 {
-                    ConsoleKey key = Console.ReadKey().Key;
-                    if (key == ConsoleKey.RightArrow)
+                    if (choiceIndex + 1 < itemData.Count)
                     {
-                        if (choiceIndex + 1 < itemData.Count)
-                        {
-                            choiceIndex++;
-                            currentKey = PrintModMenu(itemData);
-                        }
-                    }
-                    if (key == ConsoleKey.LeftArrow)
-                    {
-                        if (choiceIndex > 0)
-                        {
-                            choiceIndex--;
-                            currentKey = PrintModMenu(itemData);
-                        }
-                    }
-                    if (key == ConsoleKey.Enter)
-                    {
-                        while (true)
-                        {
-                            int[] consolePos = new int[] { Console.CursorLeft, Console.CursorTop };
-                            Console.CursorLeft = consolePos[0];
-                            string new_value = Console.ReadLine();
-                            
-                            if(new_value != string.Empty)
-                            {
-                                Database.instance.Modify(itemIndex, currentKey, new_value);
-                                PrintModMenu(itemData);
-                                break;
-                            }
-                            
-                        }
-                    }
-                    if(key == ConsoleKey.Escape)
-                    {
-                        return;
+                        choiceIndex++;
+                        currentKey = PrintModMenu(itemData);
                     }
                 }
+                if (key == ConsoleKey.LeftArrow)
+                {
+                    if (choiceIndex > 0)
+                    {
+                        choiceIndex--;
+                        currentKey = PrintModMenu(itemData);
+                    }
+                }
+                if (key == ConsoleKey.Enter)
+                {
+                    while (true)
+                    {
+                        int[] consolePos = new int[] { Console.CursorLeft, Console.CursorTop };
+                        Console.CursorLeft = consolePos[0];
+                        string new_value = Console.ReadLine();
+                        
+                        if(new_value != string.Empty)
+                        {
+                            Database.instance.Modify(itemIndex, currentKey, new_value);
+                            PrintModMenu(itemData);
+                            break;
+                        }
+                        
+                    }
+                }
+                if(key == ConsoleKey.Escape)
+                {
+                    return;
+                }
+                
             }
         }
 
@@ -104,57 +100,54 @@ namespace JsonDB
             int count = PrintItemsMenu();
             while (true)
             {
-                if (Console.KeyAvailable)
-                {
-                    ConsoleKey mov = Console.ReadKey().Key;
-                    // changing choices
-                    if(mov == ConsoleKey.UpArrow)
-                    {
-                        if(!is_backwards && choiceIndex > 0)
-                        {
-                            choiceIndex--;
-                            PrintItemsMenu();
-                        }
-                        else if(is_backwards && choiceIndex + 1 < count)
-                        {
-                            choiceIndex++;
-                            PrintItemsMenu();
-                        }
-
-                    }
-                    else if (mov == ConsoleKey.DownArrow)
-                    {
-                        if(!is_backwards && choiceIndex + 1 < count)
-                        {
-                            choiceIndex++;
-                            PrintItemsMenu();
-                        }
-                        else if(is_backwards && choiceIndex > 0)
-                        {
-                            choiceIndex--;
-                            PrintItemsMenu();
-                        }
-                    }
-                    // starting to modify
-                    else if (mov == ConsoleKey.Enter)
-                    {
-                        itemIndex = choiceIndex;
-                        ModifyMenu();
-                    }
-                    // returns back
-                    else if (mov == ConsoleKey.Escape)
-                    {
-                        choiceIndex = 0;
-                        return;
-                    }
-                    // switch to backwards mode
-                    else if (mov == ConsoleKey.Tab)
-                    {
-                        is_backwards = !is_backwards;
-                        choiceIndex = Database.instance.Count - choiceIndex;
-                        PrintItemsMenu();
-                    }
-                }
+                 ConsoleKey mov = Console.ReadKey().Key;
+                 // changing choices
+                 if(mov == ConsoleKey.UpArrow)
+                 {
+                     if(!is_backwards && choiceIndex > 0)
+                     {
+                         choiceIndex--;
+                         PrintItemsMenu();
+                     }
+                     else if(is_backwards && choiceIndex + 1 < count)
+                     {
+                         choiceIndex++;
+                         PrintItemsMenu();
+                     }
+                 
+                 }
+                 else if (mov == ConsoleKey.DownArrow)
+                 {
+                     if(!is_backwards && choiceIndex + 1 < count)
+                     {
+                         choiceIndex++;
+                         PrintItemsMenu();
+                     }
+                     else if(is_backwards && choiceIndex > 0)
+                     {
+                         choiceIndex--;
+                         PrintItemsMenu();
+                     }
+                 }
+                 // starting to modify
+                 else if (mov == ConsoleKey.Enter)
+                 {
+                     itemIndex = choiceIndex;
+                     ModifyMenu();
+                 }
+                 // returns back
+                 else if (mov == ConsoleKey.Escape)
+                 {
+                     choiceIndex = 0;
+                     return;
+                 }
+                 // switch to backwards mode
+                 else if (mov == ConsoleKey.Tab)
+                 {
+                     is_backwards = !is_backwards;
+                     choiceIndex = Database.instance.Count - choiceIndex;
+                     PrintItemsMenu();
+                 }
             }
         }
         private void Create_New_Item()
